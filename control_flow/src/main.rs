@@ -24,7 +24,7 @@ fn main() {
     println!("result is {result}");
 
     let mut count = 0;
-    'counting_up: loop {
+    'counting_up: loop { // Loop label
         println!("count = {count}");
         let mut remaining = 10;
 
@@ -43,4 +43,31 @@ fn main() {
     }
 
     println!("end count = {count}");
+
+    let mut number = 10;
+    while number != 0 {
+        println!("{number}");
+        number -= 1;
+    }
+
+    println!("end while!");
+
+
+
+    let arr = [10, 20, 30, 40, 50];
+    let mut i = 0;
+    while i < 5 {
+        println!("the value is: {}", arr[i]);
+        i += 1;
+    }
+
+    for element in arr {
+        println!("the value is: {element}");
+    }
+
+    for number in (1..4).rev() {
+        println!("{number}");
+    }
+
+
 }
