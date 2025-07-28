@@ -1,4 +1,3 @@
-
 /*
 The Stack and the  Heap
 both are parts of memory available to your code to use at runtime.
@@ -22,7 +21,84 @@ When your code calls a function, the values passed into the function (including 
 These are all problems taht ownership addresses.
 */
 
-
 fn main() {
-    println!("Hello, world!");
+    // let s  = "hello world" // this will save on the stack
+    let mut st = String::from("Hello world"); // this will save on the heap
+    st.push_str(", what a good day!");
+    println!("{st}");
+
+
+    // because these are known and fixed size, they will save on the stack
+    let x = 5;
+    let y = x;
+
+    // A String is made up of three parts which stored on the stack
+    // a pointer to the memory that holds the contents of the string
+    // a length of string
+    // a capacity
+    let s1 = String::from("hello");
+    // this copy values from the stack, so both s1 and s2 point to the same location on the heap
+    let s2 = s1;
+
+    // because both s1 and s2 point to the same location on memory,
+    // when both of them go out of scope, they try to free the same memory.
+    // this is known as a double free error
+
+    // println!("{s1}"); // it paincs because after the line let s2 = s1; Rust considers s1 as no longer valid.
+
+    // shallow copy = copying the pointer, length and capacity without copying the data is shallow copy
+    // but because Rust also INVALIDATE the first variable, instead of being callled a shallow copy, it's known as a MOVE.
+    // s1 was moved into s2;
+
+
+    // when you assign a completely new value to an existing variable, Rust will call drop and free the original value's memory immediately.
+    let mut s = String::from("Hello");
+    s = String::from("ahoy");
+
+
+    // Deep copy
+
+    let t1 = String::from("hello");
+    let t2 = t1.clone();
+    println!("t1 = {t1}, t2 = {t2}");
+
+    let v1 = String::from("this is a text");
+    takes_ownership(v1); // v1 moves into the function
+    // println!("v1 is {v1}"); v1 is no longer valid here!
+
+    let v2 = 5;
+    makes_copy(v2); // because i32 implements the Copy trait, v2 does not move into the function
+    println!("v2 is {v2}"); // it's okay to use v2 afterward
+
+
+    let my_string = gives_ownership();
+
+    let another_string = String::from("hello");
+
+    let last_string = takes_and_gives_back(another_string);
+
+    // at the end of the main scope, last_string goes out of the scope 
+    // and is dropped. another_string was moved, so nothing happens
+    // my_string goes out of scope and is dropped.
+
+
+}
+
+
+fn takes_ownership(value: String) {
+    println!("Value is {value}");
+}
+
+fn makes_copy(value: i32) {
+    println!("value is {value}");
+}
+
+
+fn gives_ownership() -> String {
+    let some_string = String::from("yours");
+    some_string
+}
+
+fn takes_and_gives_back(a_string: String) -> String {
+    a_string
 }
